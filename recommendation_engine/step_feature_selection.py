@@ -9,7 +9,7 @@ from sklearn.impute import SimpleImputer
 
 from kaggle_hub_dataset import DatasetDownloader
 
-path = DatasetDownloader().download()
+path = DatasetDownloader(dataset_id="bhanupratapbiswas/fashion-products").download()
 raw_data = pd.read_csv(os.path.join(path, "fashion_products.csv"))
 data = raw_data.copy()
 
