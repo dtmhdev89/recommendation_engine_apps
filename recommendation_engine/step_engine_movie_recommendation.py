@@ -78,8 +78,9 @@ print("--Data after mapping categorical columns")
 print(data.head())
 
 reader = Reader(rating_scale=(data["score"].min(), data["score"].max()))
+
 dataset = Dataset.load_from_df(
-    data[['orig_title', 'orig_lang', 'score']],
+    data[['orig_lang', 'orig_title', 'score']],
     reader
 )
 
