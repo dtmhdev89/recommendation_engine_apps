@@ -41,7 +41,8 @@ def main():
     index = faiss.IndexFlatL2(embeddings.shape[1])
     index.add(embeddings)
 
-    generator = pipeline("text2text-generation", model='google/flan-t5-large')
+    # base_model = "google/flan-t5-large"
+    generator = pipeline("text2text-generation", model='deepseek-ai/DeepSeek-R1')
 
     def recommend_music(
         albums,
