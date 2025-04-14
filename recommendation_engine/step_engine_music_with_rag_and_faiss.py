@@ -97,7 +97,7 @@ def main():
                 embeddings=embeddings
             )
         
-        with gr.Blocks as app:
+        with gr.Blocks() as app:
             gr.Markdown("RAG Music Recommendation")
             album_selector = gr.CheckboxGroup(
                 label='Select up to 5 albums',
