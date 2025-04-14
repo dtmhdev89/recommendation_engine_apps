@@ -42,7 +42,8 @@ def main():
     index.add(embeddings)
 
     # base_model = "google/flan-t5-large"
-    generator = pipeline("text2text-generation", model='deepseek-ai/DeepSeek-R1')
+    # alternative: deepseek-ai/DeepSeek-R1
+    generator = pipeline("text2text-generation", model='google/flan-t5-large')
 
     def recommend_music(
         albums,
@@ -112,6 +113,12 @@ def main():
             )
         
         return app
+
+    # def search_music(query, model):
+    #     if not query:
+    #         return "Please enter a keyword to search"
+        
+    #     query_embedding = model.encode([query], convert_to_numpy=True)
 
     unique_albums = data['Album'].dropna().unique().tolist()
 
