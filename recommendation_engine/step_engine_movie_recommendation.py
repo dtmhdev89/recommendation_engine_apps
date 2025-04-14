@@ -112,9 +112,17 @@ def build_gradio_interface(model, data):
         filter_movies = data[data['genre'] == genre]
         movie_scores = defaultdict(float)
         for movie in filter_movies['orig_title'].unique():
+            try:
+                print("-----")
+                print(model.trainset.to_inner_iid(movie))
+            except ValueError:
+                print("Movie title not found in the training set.")
+            
             est_score = model.predict(uid="user", iid=movie).est
             movie_scores[movie] = est_score
 
+        print("*"*20)
+        print(movie_scores)
         recommended_movies = sorted(
             movie_scores.items(),
             key=lambda x: x[1],

@@ -74,6 +74,7 @@ email_validator==2.2.0
 et-xmlfile==1.1.0
 executing==2.0.1
 expiringdict==1.2.2
+faiss-cpu==1.10.0
 Faker==33.1.0
 fastapi==0.115.12
 fastjsonschema==2.20.0
@@ -244,6 +245,7 @@ scipy==1.14.0
 seaborn==0.13.2
 semantic-version==2.10.0
 semver==3.0.2
+sentence-transformers==4.0.2
 sentry-sdk==2.19.2
 setuptools==75.6.0
 shellingham==1.5.4
@@ -263,8 +265,10 @@ tensorboard-data-server==0.7.2
 tensorflow==2.19.0
 termcolor==2.5.0
 textsearch==0.0.24
+tf_keras==2.19.0
 thop==0.1.1.post2209072238
 threadpoolctl==3.5.0
+tokenizers==0.21.1
 toml==0.10.2
 tomlkit==0.13.2
 toolz==0.12.1
@@ -274,6 +278,7 @@ torchvision==0.18.1
 tornado==6.4
 tqdm==4.66.4
 traitlets==5.14.0
+transformers==4.51.2
 trove-classifiers==2024.7.2
 typer==0.15.2
 typing_extensions==4.12.2

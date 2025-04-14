@@ -172,4 +172,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-/dataset
+recommendation_engine/dataset/*
