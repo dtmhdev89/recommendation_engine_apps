@@ -43,7 +43,7 @@ def main():
 
     # base_model = "google/flan-t5-large"
     # alternative: deepseek-ai/DeepSeek-R1
-    generator = pipeline("text2text-generation", model='google/flan-t5-large')
+    generator = pipeline("text2text-generation", model='deepseek-ai/DeepSeek-R1')
 
     def recommend_music(
         albums,
