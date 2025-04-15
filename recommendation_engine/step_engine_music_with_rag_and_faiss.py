@@ -21,7 +21,7 @@ def args_parser():
         default="album"
     )
 
-    args = option_parser.parse_args
+    args = option_parser.parse_args()
 
     return args
 
