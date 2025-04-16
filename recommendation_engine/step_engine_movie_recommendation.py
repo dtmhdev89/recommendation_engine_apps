@@ -154,10 +154,10 @@ def get_recommendations(model, data, selected_movies, genre):
         key=lambda x: x[1],
         reverse=True
     )
-    recommended_movies = (
+    recommended_movies = [
         movie for movie, _ in recommended_movies
         if movie not in selected_movies
-    )
+    ]
 
     return recommended_movies[:5]
 
