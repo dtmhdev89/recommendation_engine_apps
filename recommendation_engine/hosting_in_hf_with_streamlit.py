@@ -1,10 +1,6 @@
 from step_engine_movie_recommendation import DataPreprocess, RecommendationModel, \
     get_recommendations, get_movies_by_genre
-import pandas as pd
 import streamlit as st
-from surprise import Dataset, Reader, SVD
-from surprise.model_selection import train_test_split
-from collections import defaultdict
 
 
 if __name__ == "__main__":
@@ -22,7 +18,7 @@ if __name__ == "__main__":
     st.title("Movie Recommendation System")
     genre_list = sorted(data['genre'].unique().tolist())
     selected_genre = st.selectbox("Select a Genre", genre_list)
-    movie_options = get_movies_by_genre(selected_genre)
+    movie_options = get_movies_by_genre(data, selected_genre)
     selected_movies = st.multiselect("Select Up to 3 Movies", movie_options)
 
     if st.button("Get Recommendations"):
