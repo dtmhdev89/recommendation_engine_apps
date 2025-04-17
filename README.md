@@ -6,3 +6,4 @@
 + Demo app with gradio and streamlit
 + Deployment on hugging face on you own space.
 ### Semantic search:
++ Using DDD (Domain-Driven Design) to structure the project
