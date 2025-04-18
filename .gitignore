@@ -173,3 +173,4 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 recommendation_engine/dataset/*
+semantic_text_search_engine/ca_search_purchase_order/data/purchase-order-data-2012-2015-.csv
