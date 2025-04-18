@@ -111,7 +111,7 @@ class PurchaseOrderPreprocessingDomain:
         """Lemmatize words"""
         try:
             spacy_nlp = spacy.load("en_core_web_lg")
-            self.df_purchase_order['item_name_transformed'] = self.df_purchase_order.apply(
+            self.df_purchase_order['item_name_transformed'] = self.df_purchase_order['item_name_transformed'].apply(
                 lambda row: " ".join(
                     [w.lemma_ for w in spacy_nlp(row)]
                 )
@@ -124,7 +124,7 @@ class PurchaseOrderPreprocessingDomain:
     def data_capitalization(self):
         """Convert text to lowercase"""
         try:
-            self.df_purchase_order["item_name_transformed"] = self.df_purchase_order['item_name'].str.lower()
+            self.df_purchase_order["item_name_transformed"] = self.df_purchase_order['item_name_transformed'].str.lower()
         except Exception as e:
             print("Error to text capitalization: " + str(e))
             raise
