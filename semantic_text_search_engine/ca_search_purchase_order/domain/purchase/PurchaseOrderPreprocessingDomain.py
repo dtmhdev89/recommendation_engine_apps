@@ -161,5 +161,5 @@ class PurchaseOrderPreprocessingDomain:
             raise
 
 
-# purchaseOrderPreprocessingDomain = PurchaseOrderPreprocessingDomain()
-# purchaseOrderPreprocessingDomain.data_preprocessing()
+purchaseOrderPreprocessingDomain = PurchaseOrderPreprocessingDomain()
+purchaseOrderPreprocessingDomain.data_preprocessing()
