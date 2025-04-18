@@ -1,4 +1,4 @@
-import pandas as pd
+import os
 from domain.purchase.PurchaseOrderRepository import PurchaseOrderRepository
 from nltk.corpus import stopwords
 import spacy
@@ -9,9 +9,13 @@ spacy.cli.download("en_core_web_lg")
 class PurchaseOrderPreprocessingDomain:
     """Class for preprocessing and clean the dataset"""
 
-    def __init__(self) -> None:
+    def __init__(self, csv_load=False) -> None:
+        self.csv_load = csv_load
         self.purchaseOrderRepository = PurchaseOrderRepository()
-        self.df_purchase_order = self.purchaseOrderRepository.load_purchase_order_csv()
+        if csv_load:
+            self.df_purchase_order = self.purchaseOrderRepository.load_purchase_order_csv()
+        else:
+            self.df_purchase_order = self.purchaseOrderRepository.load_purchase_order_parquet()
     
     def set_dataframe_index(self):
         """Define the index of the dataframe"""
@@ -125,12 +129,27 @@ class PurchaseOrderPreprocessingDomain:
             print("Error to text capitalization: " + str(e))
             raise
     
+    @staticmethod
+    def convert_df_parquet(df):
+        """Convert dataframe file to parquet"""
+        try:
+            data_path = os.path.join(
+                "data",
+                "purchase-order-data-2012-2015-.parquet"
+            )
+            df.to_parquet(data_path, compression="brotli")
+        except Exception as e:
+            print("Error converting dataframe to Parquet file: " + str(e))
+            raise
+
     def data_preprocessing(self):
         """Preprocessing dataframe"""
         try:
-            self.set_dataframe_index()
-            self.delete_columns()
-            self.rename_columns_name()
+            if self.csv_load:
+                self.set_dataframe_index()
+                self.delete_columns()
+                self.rename_columns_name()
+            
             self.removing_missing_values()
             self.removing_anomalies()
             self.delete_stopwords()
