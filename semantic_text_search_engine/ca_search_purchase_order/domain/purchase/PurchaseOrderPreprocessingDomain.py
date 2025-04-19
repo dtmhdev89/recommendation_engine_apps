@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from domain.purchase.PurchaseOrderRepository import PurchaseOrderRepository
 from nltk.corpus import stopwords
 import spacy
@@ -17,11 +18,15 @@ class PurchaseOrderPreprocessingDomain:
         else:
             self.df_purchase_order = self.purchaseOrderRepository.load_purchase_order_parquet()
     
-    def set_dataframe_index(self):
+    @staticmethod
+    def set_dataframe_index(df):
         """Define the index of the dataframe"""
-        self.df_purchase_order.index += 1
+        df.index += 1
 
-    def delete_columns(self):
+        return df
+
+    @staticmethod
+    def delete_columns(df):
         """Delete unused columns"""
 
         try:
@@ -49,12 +54,15 @@ class PurchaseOrderPreprocessingDomain:
                 'REMOVE AMERISOURCE'
             ]
 
-            self.df_purchase_order.drop(list_remove_columns, axis=1, inplace=True)
+            df.drop(list_remove_columns, axis=1, inplace=True)
+            
+            return df
         except Exception as e:
             print("Error deleting data columns: " + str(e))
             raise
     
-    def rename_columns_name(self):
+    @staticmethod
+    def rename_columns_name(df):
         """Rename columns name"""
         try:
             dict_new_columns_name = {
@@ -70,61 +78,77 @@ class PurchaseOrderPreprocessingDomain:
                 "Class": "class",
                 "Class Title": "class_title",
             }
-            self.df_purchase_order.rename(
+            df.rename(
                 columns=dict_new_columns_name,
                 inplace=True
             )
+
+            return df
         except Exception as e:
             print("Error renaming columns: " + str(e))
             raise
     
-    def removing_missing_values(self):
+    @staticmethod
+    def removing_missing_values(df):
         """Removing missing values"""
         try:
-            self.df_purchase_order.dropna(subset=['item_name'], inplace=True)
+            df.dropna(subset=['item_name'], inplace=True)
+
+            return df
         except Exception as e:
             print("Error removing missing values: " + str(e))
             raise
 
-    def removing_anomalies(self):
+    @staticmethod
+    def removing_anomalies(df):
         """Removing anomalies"""
         try:
-            self.df_purchase_order = self.df_purchase_order[self.df_purchase_order["item_name"] != 'Discount']
+            df = df[df["item_name"] != 'Discount']
+
+            return df
         except Exception as e:
             print("Error removing anomalies: " + str(e))
             raise
     
-    def delete_stopwords(self):
+    @staticmethod
+    def delete_stopwords(df):
         """Delete stopwords"""
         try:
             stop = stopwords.words("english")
-            self.df_purchase_order['item_name_transformed'] = self.df_purchase_order['item_name'].apply(
+            df['item_name_transformed'] = df['item_name'].apply(
                 lambda x: ' '.join(
                     [word for word in x.split() if word not in stop]
                 )
             )
+
+            return df
         except Exception as e:
             print("Error to delete stopwords: " + str(e))
             raise
     
-    def text_lemmatize(self):
+    @staticmethod
+    def text_lemmatize(df):
         """Lemmatize words"""
         try:
             spacy_nlp = spacy.load("en_core_web_lg")
-            self.df_purchase_order['item_name_transformed'] = self.df_purchase_order['item_name_transformed'].apply(
+            df['item_name_transformed'] = df['item_name_transformed'].apply(
                 lambda row: " ".join(
                     [w.lemma_ for w in spacy_nlp(row)]
                 )
             )
 
+            return df
         except Exception as e:
             print("Error to lemmatize words: " + str(e))
             raise
     
-    def data_capitalization(self):
+    @staticmethod
+    def data_capitalization(df):
         """Convert text to lowercase"""
         try:
-            self.df_purchase_order["item_name_transformed"] = self.df_purchase_order['item_name_transformed'].str.lower()
+            df["item_name_transformed"] = df['item_name_transformed'].str.lower()
+
+            return df
         except Exception as e:
             print("Error to text capitalization: " + str(e))
             raise
@@ -146,20 +170,37 @@ class PurchaseOrderPreprocessingDomain:
         """Preprocessing dataframe"""
         try:
             if self.csv_load:
-                self.set_dataframe_index()
-                self.delete_columns()
-                self.rename_columns_name()
+                self.df_purchase_order = self.set_dataframe_index(self.df_purchase_order)
+                self.df_purchase_order = self.delete_columns(self.df_purchase_order)
+                self.df_purchase_order = self.rename_columns_name(self.df_purchase_order)
             
-            self.removing_missing_values()
-            self.removing_anomalies()
-            self.delete_stopwords()
-            self.text_lemmatize()
-            self.data_capitalization()
+            self.df_purchase_order = self.removing_missing_values(self.df_purchase_order)
+            self.df_purchase_order = self.removing_anomalies(self.df_purchase_order)
+            self.df_purchase_order = self.delete_stopwords(self.df_purchase_order)
+            self.df_purchase_order = self.text_lemmatize(self.df_purchase_order)
+            self.df_purchase_order = self.data_capitalization(self.df_purchase_order)
 
         except Exception as e:
             print("Error preprocessing dataframe: " + str(e))
             raise
 
+    def text_query_preprocessing(self, text_query):
+        """Preprocessing text query"""
+        try:
+            dict_query = {'item_name': [text_query]}
+            df_query = pd.DataFrame(dict_query)
+            df_query = self.removing_anomalies(df_query)
+            df_query = self.delete_stopwords(df_query)
+            df_query = self.text_lemmatize(df_query)
+            df_query = self.data_capitalization(df_query)
+            result_text_query = df_query.item_name_transformed.loc[0]
+            print(result_text_query)
+            return result_text_query
+        except Exception as e:
+            print("Error preprocessing text query: " + str(e))
+            raise
+
 
 purchaseOrderPreprocessingDomain = PurchaseOrderPreprocessingDomain()
-purchaseOrderPreprocessingDomain.data_preprocessing()
+# purchaseOrderPreprocessingDomain.data_preprocessing()
+purchaseOrderPreprocessingDomain.text_query_preprocessing("Ordering diapers")
