@@ -194,13 +194,13 @@ class PurchaseOrderPreprocessingDomain:
             df_query = self.text_lemmatize(df_query)
             df_query = self.data_capitalization(df_query)
             result_text_query = df_query.item_name_transformed.loc[0]
-            print(result_text_query)
+
             return result_text_query
         except Exception as e:
             print("Error preprocessing text query: " + str(e))
             raise
 
 
-purchaseOrderPreprocessingDomain = PurchaseOrderPreprocessingDomain()
+# purchaseOrderPreprocessingDomain = PurchaseOrderPreprocessingDomain()
 # purchaseOrderPreprocessingDomain.data_preprocessing()
-purchaseOrderPreprocessingDomain.text_query_preprocessing("Ordering diapers")
+# purchaseOrderPreprocessingDomain.text_query_preprocessing("Ordering diapers")
