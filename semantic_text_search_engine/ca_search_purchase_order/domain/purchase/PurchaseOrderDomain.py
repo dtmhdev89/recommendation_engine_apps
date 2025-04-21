@@ -61,5 +61,7 @@ class PurchaseOrderDomain:
             raise
 
 
+embeddings = PurchaseOrderWordEmbeddingsDomain()
+embeddings.create_word_embeddings_file()
 purchaseOrderDomain = PurchaseOrderDomain()
 print(purchaseOrderDomain.semantic_search("agency"))
