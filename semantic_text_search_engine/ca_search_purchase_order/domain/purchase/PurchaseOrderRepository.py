@@ -33,6 +33,7 @@ class PurchaseOrderRepository:
     
     @staticmethod
     def load_purchase_order_parquet():
+        """Load data file in parquet format"""
         try:
             data_path = os.path.join(
                 "data",
