@@ -8,6 +8,7 @@ from sentence_transformers import SentenceTransformer, util
 class PurchaseOrderDomain:
     """Domain Class"""
 
+    @staticmethod
     def semantic_search(sentence_query):
         try:
             # pre-processing of the sentence sent as search criteria
