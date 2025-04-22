@@ -216,7 +216,7 @@ class SearchRagApi:
             ), 500
 
 
-if __name__ == "__main__":""
+if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description="System options")
 
     argparser.add_argument(
