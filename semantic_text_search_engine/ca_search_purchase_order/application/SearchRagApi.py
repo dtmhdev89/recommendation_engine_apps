@@ -146,7 +146,18 @@ class SearchRagApi:
     @staticmethod
     @app.route("/service/search", methods=["POST"])
     def search_text_api():
-        """RAG Search API"""
+        """RAG Search API
+        ---
+        tags:
+            - RAG Search
+        parameters:
+            - name: body
+              in: body
+              required: true
+        responses:
+            200:
+                description: Success search.
+        """
 
         try:
             json_query = json.loads(request.data)
