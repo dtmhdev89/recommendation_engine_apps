@@ -1,4 +1,5 @@
 import json
+import os
 from domain.purchase.PurchaseOrderPreprocessingDomain import PurchaseOrderPreprocessingDomain
 from domain.purchase.PurchaseOrderWordEmbeddingsDomain import PurchaseOrderWordEmbeddingsDomain
 from domain.purchase.PurchaseOrderDomain import PurchaseOrderDomain
@@ -111,5 +112,14 @@ class SemanticSearchApi:
             ), 500
 
 if __name__ == "__main__":
-    # host="127.0.0.1"
-    app.run(debug=True)
+    if not os.getenv("NGROK_TOKEN"):
+        app.run(debug=True, host="127.0.0.1")
+    else:
+        from pyngrok import ngrok
+        
+        port = 5000
+        public_url = ngrok.connect(port)
+        print(f"ngrok tunnel available at: {public_url}")
+
+        # Start Flask app
+        app.run(port=port)
