@@ -12,7 +12,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from flasgger import Swagger
 from flask import Flask, Response, request
 import json
-
+import argparse
 
 app = Flask(__name__)
 Swagger(app)
@@ -169,4 +169,34 @@ class SearchRagApi:
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1")
+    argparser = argparse.ArgumentParser(description="System options")
+
+    argparser.add_argument(
+        "--use-ngrok",
+        action="store_true",
+        default=False,
+        help="Enable ngrok"
+    )
+
+    argparser.add_argument(
+        "--no-use-ngrok",  # Optional: for explicitly setting to False
+        action="store_false",
+        dest="use_ngrok",  # Link to the same 'use_ngrok' argument
+        help="Disable ngrok"
+    )
+
+    options = argparser.parse_args()
+
+    print("parser: ", options)
+    if not options.use_ngrok:
+        app.run(debug=True, host="127.0.0.1")
+    else:
+        print("ngrok enabled")
+        from pyngrok import ngrok
+
+        port = 5000
+        public_url = ngrok.connect(port)
+        print(f"ngrok tunnel available at: {public_url}")
+
+        # Start Flask app
+        app.run(port=port)

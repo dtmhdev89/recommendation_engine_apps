@@ -1,6 +1,5 @@
 import argparse
 import json
-import os
 from domain.purchase.PurchaseOrderPreprocessingDomain import PurchaseOrderPreprocessingDomain
 from domain.purchase.PurchaseOrderWordEmbeddingsDomain import PurchaseOrderWordEmbeddingsDomain
 from domain.purchase.PurchaseOrderDomain import PurchaseOrderDomain
