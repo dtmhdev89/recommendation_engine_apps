@@ -9,7 +9,7 @@ from langchain_core.runnables import RunnablePassthrough
 from sentence_transformers import SentenceTransformer
 from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
-import flasgger import Swagger
+from flasgger import Swagger
 from flask import Flask, Response, request
 import json
 
