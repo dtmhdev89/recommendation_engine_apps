@@ -112,11 +112,13 @@ class SemanticSearchApi:
             ), 500
 
 if __name__ == "__main__":
+    print("*"*20)
+    print(os.getenv("NGROK_TOKEN"))
     if not os.getenv("NGROK_TOKEN"):
         app.run(debug=True, host="127.0.0.1")
     else:
         from pyngrok import ngrok
-        
+
         port = 5000
         public_url = ngrok.connect(port)
         print(f"ngrok tunnel available at: {public_url}")
