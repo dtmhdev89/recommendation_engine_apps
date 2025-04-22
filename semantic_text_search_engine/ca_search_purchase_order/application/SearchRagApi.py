@@ -13,7 +13,6 @@ from flasgger import Swagger
 from flask import Flask, Response, request
 import json
 import argparse
-import traceback
 
 app = Flask(__name__)
 Swagger(app)
@@ -39,6 +38,7 @@ class SearchRagApi:
                 model="gemini-2.0-flash-001",
                 temperature=0,
                 verbose=True,
+                request_timeout=60,
                 max_retries=2
             )
 
@@ -118,6 +118,7 @@ class SearchRagApi:
 
         list_result_found = [list_documents[i] for i in indexes[0]]
 
+        print(len(list_result_found))
         return list_result_found
 
     def generate_augmented_response(
