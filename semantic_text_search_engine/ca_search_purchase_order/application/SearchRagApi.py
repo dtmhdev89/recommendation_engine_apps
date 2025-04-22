@@ -131,7 +131,12 @@ class SearchRagApi:
 
         chat_prompt_template = self.template_builder_for_llm_provider()
 
-        prompt = ChatPromptTemplate.from_template(chat_prompt_template)
+        if self.llm_provider == "openai":
+            prompt = ChatPromptTemplate.from_template(chat_prompt_template)
+
+        if self.llm_provider == "gemini":
+            prompt = ChatPromptTemplate.from_messages(chat_prompt_template)
+            
         rag_chain = (
             {"context": lambda x: list_retrieved_documents, "question": RunnablePassthrough()}
             | prompt
