@@ -140,10 +140,9 @@ class SearchRagApi:
             | StrOutputParser()
         )
 
-        print("rag_chain: ", rag_chain)
-
+        print("-----START invoke rag chain")
         result = rag_chain.invoke(text_query)
-
+        print("-----END rag chain")
         return result
 
     @staticmethod
@@ -166,7 +165,6 @@ class SearchRagApi:
             json_query = json.loads(request.data)
             searchRagApi = SearchRagApi()
             query = json_query["sentence_query"]
-            print("query: ", query)
             json_result = searchRagApi.search_text(query)
             json_result = '{ "result" : "', json_result, '"}'
 
@@ -176,8 +174,6 @@ class SearchRagApi:
             ), 200
         
         except Exception as e:
-            print("Error during search:")
-            traceback.print_exc()
             print(e)
             return Response(
                 '{"result": "Failure to search: "}',
