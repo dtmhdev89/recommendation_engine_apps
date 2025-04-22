@@ -37,7 +37,7 @@ class SearchRagApi:
             self.llm_model = ChatGoogleGenerativeAI(
                 model="gemini-2.0-flash-001",
                 temperature=0,
-                verbose=True,
+                # verbose=True,
                 request_timeout=60,
                 max_retries=2
             )
