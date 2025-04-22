@@ -25,6 +25,7 @@ class SearchRagApi:
 
     def __init__(self, llm_provider="gemini"):
         self.embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+        self.llm_provider = llm_provider
         if llm_provider == "openai":
             self.llm_model = ChatOpenAI(
                 model_name="gpt-4o-mini",
@@ -128,14 +129,7 @@ class SearchRagApi:
     ):
         """Generate augmented response"""
 
-        chat_prompt_template = """You are an assistant for question-answering tasks.
-        Use the following pieces of retrieved context to answer the question.
-        If you don't know the answer, just say that you don't know.
-        Use three sentences maximum and keep the answer concise.
-        Question: {question}
-        Context: {context}
-        Answer:
-        """
+        chat_prompt_template = self.template_builder_for_llm_provider()
 
         prompt = ChatPromptTemplate.from_template(chat_prompt_template)
         rag_chain = (
@@ -149,6 +143,42 @@ class SearchRagApi:
         result = rag_chain.invoke(text_query)
         print("-----END rag chain")
         return result
+    
+    def template_builder_for_llm_provider(self):
+        """Template message builder by llm provider"""
+
+        if self.llm_provider == "gemini":
+            chat_prompt_template = [
+                (
+                    "system",
+                    """
+                    You are an assistant for question-answering tasks.
+                    Use the following pieces of retrieved context to answer the question.
+                    If you don't know the answer, just say that you don't know.
+                    Use three sentences maximum and keep the answer concise.
+                    """,
+                ),
+                (
+                    "human",
+                    """
+                    Question: {question}
+                    Context: {context}
+                    Answer:
+                    """
+                )
+            ]
+        
+        if self.llm_provider == "openai":
+            chat_prompt_template = """You are an assistant for question-answering tasks.
+            Use the following pieces of retrieved context to answer the question.
+            If you don't know the answer, just say that you don't know.
+            Use three sentences maximum and keep the answer concise.
+            Question: {question}
+            Context: {context}
+            Answer:
+            """
+        
+        return chat_prompt_template
 
     @staticmethod
     @app.route("/service/search", methods=["POST"])
@@ -186,7 +216,7 @@ class SearchRagApi:
             ), 500
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":""
     argparser = argparse.ArgumentParser(description="System options")
 
     argparser.add_argument(
