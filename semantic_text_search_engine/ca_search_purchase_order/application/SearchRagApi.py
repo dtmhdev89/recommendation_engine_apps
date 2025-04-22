@@ -13,6 +13,7 @@ from flasgger import Swagger
 from flask import Flask, Response, request
 import json
 import argparse
+import traceback
 
 app = Flask(__name__)
 Swagger(app)
@@ -37,7 +38,7 @@ class SearchRagApi:
             self.llm_model = ChatGoogleGenerativeAI(
                 model_name="gemini-2.0-flash-001",
                 temperature=0,
-                # verbose=True,
+                verbose=True,
                 max_retries=2
             )
 
@@ -172,9 +173,11 @@ class SearchRagApi:
             ), 200
         
         except Exception as e:
+            print("Error during search:")
+            traceback.print_exc()
             print(e)
             return Response(
-                '{"result": "Failure to search: ' + str(e) + '"}',
+                '{"result": "Failure to search: "}',
                 mimetype='application/json'
             ), 500
 
