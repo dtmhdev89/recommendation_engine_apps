@@ -67,17 +67,21 @@ class SearchRagApi:
     def search_text(self, text_query):
         """Search RAG text"""
 
+        print("----Load corpus")
         list_documents = self.load_corpus_datasource()
+        print("----Make corpus embeddings")
         documents_embeddings = self.generate_corpus_embeddings(list_documents)
 
+        print("----Generate query embeddings")
         query_embedding = self.generate_query_embeddings(text_query)
 
+        print("----Retrieve documents")
         list_retrieved_documents = self.retrieve_documents(
             list_documents=list_documents,
             documents_embeddings=documents_embeddings,
             query_embedding=query_embedding
         )
-
+        print("----Make answer")
         answer = self.generate_augmented_response(
             text_query,
             list_retrieved_documents
