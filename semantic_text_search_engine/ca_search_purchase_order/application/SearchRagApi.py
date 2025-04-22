@@ -140,6 +140,8 @@ class SearchRagApi:
             | StrOutputParser()
         )
 
+        print("rag_chain: ", rag_chain)
+
         result = rag_chain.invoke(text_query)
 
         return result
@@ -164,6 +166,7 @@ class SearchRagApi:
             json_query = json.loads(request.data)
             searchRagApi = SearchRagApi()
             query = json_query["sentence_query"]
+            print("query: ", query)
             json_result = searchRagApi.search_text(query)
             json_result = '{ "result" : "', json_result, '"}'
 
