@@ -35,7 +35,7 @@ class SearchRagApi:
         
         if llm_provider == "gemini":
             self.llm_model = ChatGoogleGenerativeAI(
-                model_name="gemini-2.0-flash",
+                model_name="gemini-2.0-flash-001",
                 temperature=0,
                 verbose=True,
                 max_retries=2
@@ -174,7 +174,7 @@ class SearchRagApi:
         except Exception as e:
             print(e)
             return Response(
-                '{"result": "Failure to search."}',
+                '{"result": "Failure to search: ' + str(e) + '"}',
                 mimetype='application/json'
             ), 500
 
