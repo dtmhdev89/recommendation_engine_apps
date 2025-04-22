@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 from domain.purchase.PurchaseOrderPreprocessingDomain import PurchaseOrderPreprocessingDomain
@@ -112,9 +113,17 @@ class SemanticSearchApi:
             ), 500
 
 if __name__ == "__main__":
-    print("*"*20)
-    print(os.getenv("NGROK_TOKEN"))
-    if not os.getenv("NGROK_TOKEN"):
+    argparser = argparse.ArgumentParser(description="System options")
+
+    argparser.add_argument(
+        "--use-ngrok",
+        type=bool,
+        default=False
+    )
+
+    options = argparser.parse_args()
+
+    if not options.use_ngrok:
         app.run(debug=True, host="127.0.0.1")
     else:
         from pyngrok import ngrok
