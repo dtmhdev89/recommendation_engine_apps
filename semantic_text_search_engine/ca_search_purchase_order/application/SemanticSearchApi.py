@@ -117,15 +117,25 @@ if __name__ == "__main__":
 
     argparser.add_argument(
         "--use-ngrok",
-        type=bool,
-        default=False
+        action="store_true",
+        default=False,
+        help="Enable ngrok"
+    )
+
+    argparser.add_argument(
+        "--no-use-ngrok",  # Optional: for explicitly setting to False
+        action="store_false",
+        dest="use_ngrok",  # Link to the same 'use_ngrok' argument
+        help="Disable ngrok"
     )
 
     options = argparser.parse_args()
 
+    print("parser: ", options)
     if not options.use_ngrok:
         app.run(debug=True, host="127.0.0.1")
     else:
+        print("ngrok enabled")
         from pyngrok import ngrok
 
         port = 5000
